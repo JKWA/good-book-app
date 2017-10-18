@@ -1,5 +1,7 @@
 Good Book is an app to try things out.  It was bootstrapped from create-react-app
 
+[Try Good Book] (https://book-fly.firebaseapp.com/)
+
 
 ## Table of Contents
 
@@ -48,9 +50,6 @@ create-react-app is a great way to get something started
     * Testing is easier then other strategies I've used, but still a challenge.
   * build tool is great
   * eject is possible, but would need to build a really good case first
-
-
-
 
 
 ## Redux 3.5
