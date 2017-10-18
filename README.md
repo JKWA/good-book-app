@@ -23,7 +23,7 @@ Why am I thinking about moving to React?
 * It's exclusively javascript, which is interesting
 
 
-###Lessons Learned
+### Lessons Learned
 * Easy to learn
 * Large active community
 * Clear documented opinions (do this, not that).
@@ -55,7 +55,7 @@ create-react-app is a great way to get something started
 ## Redux 3.5
 After lots of challenges with debugging asynchronous applications I was particularly interested in testing Redux
 
-###Lessons Learned
+### Lessons Learned
 * Redux has a bit of boilerplate, which might be overkill for simple apps.
 * Although it is easy to save all state changes in Redux, it sometimes makes sense to save changes within a component's local state, such as real-time input validating.
 * A side effect of Redux is that it simplifies React Components
@@ -91,7 +91,7 @@ I have experience with NoSql, but I wish
 
 I also wanted to test how to use a realtime database works with Redux, particularly if they overlapped to the point where they were mostly duplicating each other's functions.
 
-###Lessons Learned
+### Lessons Learned
 * Issues with data structures are somewhat improved, particularly when it comes to nesting data.
 * Querying is a bit more robust, but it is still important to consider the limitations when designing data structures.
 * Firestore has good documentation and lots of options for handling listeners.
@@ -102,7 +102,7 @@ I also wanted to test how to use a realtime database works with Redux, particula
 * Deleting collections and documents is a bit more complicated
 * Updating data is only possible if the document exists, so best to call ```get()``` before updating to check if the document exists ```(doc.exists) ? db.update(data) : db.set(data)```. 
 
-##Firebase Functions Beta
+## Firebase Functions Beta
 I've been using Firebase's server-side functions from it's initial release, including:
 
 * Processing images (creating thumbnails and screening for inappropriate content)
@@ -125,7 +125,7 @@ I wanted to test Functions with Firestore, including:
 * Firebase Functions are still in Beta, and may not quite yet be dependable enough to run important functions 
 
 
-##ES6
+## ES6
 I wanted to more use of ES6, including:
 
 * imports
