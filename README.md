@@ -1,6 +1,6 @@
 Good Book is an app to try things out.  It was bootstrapped from create-react-app
 
-[Try Good Book] (https://book-fly.firebaseapp.com/)
+[Try Good Book](https://book-fly.firebaseapp.com/)
 
 
 ## Table of Contents
@@ -18,8 +18,8 @@ Good Book is an app to try things out.  It was bootstrapped from create-react-ap
 
 Why am I thinking about moving to React?
 
-* React with Redux is clearly gaining steam
-* Changes in browsers, particularly ES6 modules seem to fit with React better than other frameworks
+* React with Redux is gaining steam
+* Changes to browsers, particularly ES6 modules, fit with React
 * It's exclusively javascript, which is interesting
 
 
@@ -32,7 +32,7 @@ Why am I thinking about moving to React?
 * Typechecking doesn't throw errors for testing 
 * No built-in way to trigger an action only when the component is mounted the first time.
 * Component error-handling is helpful, including setting error boundaries.
-* Best to avoid decorators, they don't solve a difficult problem yet add fragility.
+* Best to avoid decorators, they don't solve a difficult problem but add fragility.
 
 ## Create React App
 create-react-app is a great way to get something started
@@ -41,32 +41,30 @@ create-react-app is a great way to get something started
   * Hot reloading saves time and keystrokes
   * ES6 support
   * Testing setup 
-    * There is a conflict when adding firebase functions folder.  
+    * There is a conflict when adding firebase functions folder.  It is resolved buy adding:
 ```json
 "scripts": {
     "test": "CI=true react-scripts test --env=jsdom --coverage --collectCoverageFrom=src/**/*js --collectCoverageFrom=!functions",
   },
 ```
-    * Testing is easier then other strategies I've used, but still a challenge.
   * build tool is great
   * eject is possible, but would need to build a really good case first
 
 
 ## Redux 3.5
-After lots of challenges with debugging asynchronous applications I was particularly interested in testing Redux
+After lots of challenges with debugging asynchronous applications, I was particularly interested in trying Redux
 
 ### Lessons Learned
 * Redux has a bit of boilerplate, which might be overkill for simple apps.
 * Although it is easy to save all state changes in Redux, it sometimes makes sense to save changes within a component's local state, such as real-time input validating.
-* A side effect of Redux is that it simplifies React Components
+* A positive side effect of Redux is that it simplifies React Components
 * It is easy to refactor and debug, particularly helpful is 
 ```javascript
 store.subscribe(() => { 
     console.log("store changed", store.getState());
   })
 ```
-* Breaking up reducers is a good way organize things, the tradeoff is that it limits what part of the state can be updated (such updating a general progress bar).
-* Create folders for actions and reducers 
+* Breaking up reducers is a good way organize things.
 * Return functions when creating an action
 ```javascript 
 export function openDrawer (){
@@ -80,9 +78,15 @@ export function openDrawer (){
 ## Material UI 1.0 Beta
 This was a good opportunity try new strategies for handling CSS. 
 
+### Lessons learned
+
+* Easy to implement and use
+* Some components are a bit buggy
+* Mui themes are helpful
+
 
 ## Firebase Firestore Beta
-I have experience with NoSql, but I wish
+I have experience with NoSql, but I wish:
 
 * data structures didn't need to focus so much on the limitations of the platform (flat)
 * refactoring was easier (easy to get locked into early decisions)
