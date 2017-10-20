@@ -1,8 +1,10 @@
 // ISSUE that 'docked' for Drawer does not accept a boolean, probably beta issue.
-// TODO update route to respect initial route in url.
+// ISSUE route should be better integraged with Redux, this solution is a bit hacky.
 
 import React, { Component } from 'react'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
+import createBrowserHistory from 'history/createBrowserHistory'
+
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { MuiThemeProvider, createMuiTheme, withStyles } from 'material-ui/styles'
@@ -19,6 +21,7 @@ import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List'
 import blueGrey from 'material-ui/colors/blueGrey'
 import deepPurple from 'material-ui/colors/deepPurple'
 import red from 'material-ui/colors/red'
+import grey from 'material-ui/colors/grey';
 
 import Divider from 'material-ui/Divider'
 import HomeIcon from 'material-ui-icons/Home'
@@ -32,6 +35,8 @@ import SettingsPage from './pages/Settings'
 import HomePage from './pages/Home'
 import FavoriteBooksPage from './pages/FavoriteBook'
 import HighestRatedPage from './pages/HighestRatedBook'
+import TechnologyPage from './pages/Technology'
+
 
 import Login from './components/User/Login'
 import UserBookData from './components/Data/UserBookData'
@@ -92,6 +97,14 @@ const mapStateToProps = state => {
           title:'Settings',
           main: SettingsPage,
         },
+
+        technology:{ 
+          path: '/techology',
+          name:'technology',
+          title:'Services',
+          main: TechnologyPage,
+        },
+        
       }, 
     }
   }
@@ -102,6 +115,7 @@ const styles = theme => ({
   flex: {
     flex: 1,
   },
+
   menuButton: {
     marginLeft: -12,
     marginRight: 20,
@@ -127,7 +141,9 @@ const styles = theme => ({
     height: '100%',
   },
 
-  drawerHeader: theme.mixins.toolbar,
+  drawerHeader: {
+    margin: '12px auto',
+  },
 
   content: {
     backgroundColor: theme.palette.background.default,
@@ -136,7 +152,6 @@ const styles = theme => ({
     marginTop: '56px',
     overflowY: 'scroll',
     overflowScrolling: 'touch',
-    // WebkitOverflowScrolling: 'touch',
   },
 
 })
@@ -149,7 +164,6 @@ class Layout extends Component {
         this._signOut = this._signOut.bind(this)
         this.state = { width: '0', height: '0' }
         this.updateWindowDimensions = this.updateWindowDimensions.bind(this)
-        
       }
 
       componentDidMount() {
@@ -173,6 +187,11 @@ class Layout extends Component {
         const search = route.search
         const favorite = route.favorite
         const like = route.like
+        const technology = route.technology
+        const history = createBrowserHistory()
+        const location = (history.location) ? history.location.pathname : null
+        
+
         return (
         <MuiThemeProvider theme={theme}>
         <div>
@@ -180,7 +199,7 @@ class Layout extends Component {
           <UserBookData />
           
           <Login/>
-          <Router>
+          <Router >
             <div>
               <AppBar position="absolute">
                   <Toolbar>
@@ -204,19 +223,21 @@ class Layout extends Component {
                       key={index}
                       path={route.path}
                       exact={route.exact}
-                      component={() => <h2>{route.title}</h2>}
+                      component={() => <Typography className={classes.drawerHeader} type="headline">{route.title}</Typography>}
                   />
                 ))}
-                <Divider />
+                <Divider/>
           
                 <div className={classes.list}>
+
                 <List>
+
                     <Link className={classes.listItem} to={home.path}>
                         <ListItem 
                           id={home.name} 
                           button 
                           aria-label={home.title}
-                          disabled={(this.props.route === home.name)}
+                          style={{backgroundColor: (location === `/`) ? grey[500] : null}}
                           onClick={this._setRoute}>
                             <ListItemIcon>
                                 <HomeIcon />
@@ -228,7 +249,7 @@ class Layout extends Component {
                       <Link className={this.props.classes.listItem} to={like.path}>
                         <ListItem 
                           id={like.name} 
-                          disabled={(this.props.route === like.name)}
+                          style={{backgroundColor: (location === `/${like.name}`) ? grey[500] : null}}
                           button 
                           aria-label={like.title}
                           onClick={this._setRoute}>
@@ -242,7 +263,7 @@ class Layout extends Component {
                       <Link className={this.props.classes.listItem} to={search.path}>
                         <ListItem 
                           id={search.name} 
-                          disabled={(this.props.route === search.name)}
+                          style={{backgroundColor: (location === `/${search.name}`) ? grey[500] : null}}
                           button 
                           aria-label={search.title}
                           onClick={this._setRoute}>
@@ -252,10 +273,11 @@ class Layout extends Component {
                             <ListItemText primary={search.title}  />
                         </ListItem>
                       </Link>
+
                       <Link className={this.props.classes.listItem} to={favorite.path}>
                         <ListItem 
                           id={favorite.name} 
-                          disabled={(this.props.route === favorite.name)}
+                          style={{backgroundColor: (location === `/${favorite.name}`) ? grey[500] : null}}
                           button 
                           aria-label={favorite.title}
                           onClick={this._setRoute}>
@@ -269,7 +291,7 @@ class Layout extends Component {
                       <Link className={classes.listItem} to={settings.path}>
                         <ListItem 
                           id={settings.name}
-                          disabled={(this.props.route === settings.name)}
+                          style={{backgroundColor: (location === `/${settings.name}`) ? grey[500] : null}}
                           button 
                           aria-label={settings.title}
                           onClick={this._setRoute}>
@@ -279,6 +301,18 @@ class Layout extends Component {
                         <ListItemText primary={settings.title}  />
                       </ListItem>
                   </Link>
+
+                  <Link className={classes.listItem} to={technology.path}>
+                    <ListItem 
+                          id={technology.name}
+                          style={{backgroundColor: (location === `/${technology.name}`) ? grey[500] : null}}
+                          button 
+                          aria-label={technology.title}
+                          onClick={this._setRoute}>
+                          
+                        <ListItemText inset={true} primary={technology.title}  />
+                      </ListItem>
+                    </Link>
                   </List>
                 </div>
             </Drawer>
