@@ -1,5 +1,3 @@
-// ISSUE that 'docked' for Drawer does not accept a boolean, probably beta issue.
-// ISSUE route should be better integraged with Redux, this solution is a bit hacky.
 
 import React, { Component } from 'react'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'

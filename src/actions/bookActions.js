@@ -9,7 +9,7 @@ export function fetchBooks(queryString){
         })
         .catch(error => {
             console.log(error)
-            dispatch({type:'FETCH_BOOKS_ERROR', payload:error})
+            dispatch({type:'FETCH_BOOKS_REJECTED', payload:error})
         })
     }
 }
@@ -24,7 +24,7 @@ export function addBooks(queryString, startIndex){
         })
         .catch(error => {
             console.log(error)
-            dispatch({type:'FETCH_BOOKS_ERROR', payload:error})
+            dispatch({type:'FETCH_BOOKS_REJECTED', payload:error})
         })
     }
 } 
@@ -42,21 +42,35 @@ function fetchGoogleBooks(queryString, startIndex){
         const cors = _createCORSRequest('GET', url)
         
         if (!cors) {
-            reject({errorType:'BROWSER_ERROR', errorMessage: 'This browser does not support search'})
+            reject({type:'BROWSER_ERROR', message: 'This browser does not support search'})
             return
         }
         
         cors.onload = () => {
-            resolve(_parseBooks(cors))
+            if(cors.status === 200){
+              try{
+                resolve(_parseBooks(cors))
+                return 
+              }catch(error){
+                reject({type:'RESPONSE_PARSE_ERROR', message:`Google server error, please try again`})
+                return
+              }
+              
+            }
+            reject({type:'SERVER_RESPONSE_ERROR', message:`Google server error (${cors.status}), please try again`})
+            return
+        }
+
+        cors.ontimeout = () => {
+            reject({type:'SERVER_TIMEOUT_ERROR', message:`Google server timed out, please try again`})
             return
         }
         
         cors.onerror = (error) => {
             console.log(error)
-            reject(error)
+            reject({type:'SERVER_ERROR', message:'Request not completed'})
             return
         }
-        
         cors.send()
     })
 
@@ -65,7 +79,6 @@ function fetchGoogleBooks(queryString, startIndex){
 
 function _createCORSRequest(method, url) {
     let request = new XMLHttpRequest()
-    // request.setRequestHeader()
     if ("withCredentials" in request) {
         request.open(method, url, true)
     } else if (typeof XDomainRequest !== "undefined") {
@@ -74,12 +87,12 @@ function _createCORSRequest(method, url) {
     } else {
         request = null
     }
-    console.log(request)
     return request
   }
 
 
   function _parseBooks(request){
+      
     const response = (request.responseText) ? JSON.parse(request.responseText) : {}
     const books = response.items;
     const bookObj = {}

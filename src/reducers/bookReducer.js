@@ -3,14 +3,14 @@
 const initialState = {
     fetching: false,
     fetched: false,
-    queryError:null,
+    fetchError: null,
     query: '',
+    queryError:null,
     searchBooks: {},
     highestRatedBooks:{},
     totalItems:0,
     nextIndex:11,
     hasMore:true,
-    error: null,
   }
 
 
@@ -19,7 +19,7 @@ const initialState = {
     case "FETCH_BOOKS_PENDING": {
       return {
         ...state, 
-        error:null,        
+        fetchError:null,        
         fetching: true, 
         query:action.payload,
         nextIndex:11,
@@ -32,7 +32,7 @@ const initialState = {
       return {
         ...state, 
         fetching: false, 
-        error:action.payload,
+        fetchError: action.payload,
       }
     }
     case "FETCH_BOOKS_FULFILLED": {
@@ -40,7 +40,7 @@ const initialState = {
         ...state,
         fetching: false,
         fetched: true,
-        error:null,
+        fetchError:null,
         searchBooks: action.payload,
         totalItems: action.payload.data.totalItems
       }
@@ -49,7 +49,7 @@ const initialState = {
     case "ADD_BOOKS_PENDING": {
         return {
             ...state,
-            error:null,
+            fetchError:null,
             fetching: true,
             nextIndex: state.nextIndex+10,
             hasMore: (state.nextIndex <= 51) ? true :false,
@@ -60,7 +60,7 @@ const initialState = {
       case "SET_TOTAL_BOOK": {
         return {
             ...state,
-            error:null,
+            fetchError:null,
             fetching: false,
             totalItems: action.payload,
         }
@@ -69,7 +69,7 @@ const initialState = {
       case "ADD_BOOK": {
         return {
             ...state,
-            error:null,
+            fetchError:null,
             fetching: false,
             searchBooks: Object.assign({}, state.searchBooks, action.payload),
         }
@@ -81,7 +81,7 @@ const initialState = {
     case "ADD_BOOKS_FULFILLED": {
         return {
           ...state,
-          error:null,
+          fetchError:null,
           fetching: false,
           fetched: true,
           books: state.book.concat(action.payload.data.items),
@@ -102,7 +102,6 @@ const initialState = {
         return {
           ...state,
           query: action.payload,
-          error:null,
           queryError:null,
           fetching: false,
           fetched: false,

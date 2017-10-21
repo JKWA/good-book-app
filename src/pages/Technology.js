@@ -7,8 +7,6 @@ import ErrorBoundry from "../components/Error/ErrorBoundry"
 import Paper from 'material-ui/Paper'
 
 
-
-
 const mapStateToProps = state => {
   return {
     topics: [
@@ -44,11 +42,6 @@ const mapStateToProps = state => {
         link: 'https://firebase.google.com/docs/functions/',
         description: 'Triggers backend code in response to events triggered by Firestore and Auth.'
       },
-      // {
-      //   title: 'CSS Grid layout',
-      //   link: 'https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Grid_Layout',
-      //   description: 'A new strategy for making content responsive.'
-      // },
 
       {
         title: 'Other',

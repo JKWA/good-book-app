@@ -9,11 +9,11 @@ import BookSearch from "../components/Book/Search"
 import ErrorBoundry from "../components/Error/ErrorBoundry"
 
 
+
 const mapStateToProps = state => {
 
     return {
         books: state.book.searchBooks,
-        loading: state.book.fetching,
         query: state.book.query,
         pageStart:0,
         hasMore: state.book.hasMore,
@@ -55,6 +55,8 @@ const mapStateToProps = state => {
            
         <div style={inlineStyle}>
             <BookSearch/>
+
+            
             
             <InfiniteScroll
                 pageStart={0}
