@@ -19,6 +19,7 @@ const mapStateToProps = state => {
         hasMore: state.book.hasMore,
         nextIndex: state.book.nextIndex,
         totalItems: state.book.totalItems,
+        offline: state.layout.offline,
     }
   }
 
@@ -74,7 +75,7 @@ const mapStateToProps = state => {
         )
     }
     _loadItems = (page) => {
-        this.props.dispatch(addBooks(this.props.query, this.props.nextIndex))
+        this.props.dispatch(addBooks(this.props.query, this.props.nextIndex, this.props.offline))
     }
 }
 

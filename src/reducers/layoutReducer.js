@@ -5,6 +5,7 @@ const initialState = {
     dockedDrawer: true,
     error: null,
     route:'home',
+    offline: false,
     displaySize: {width:0, height:0, size:'phone'}
   }
 
@@ -42,6 +43,16 @@ const initialState = {
         displaySize: action.payload,
       }
     }
+
+    case "UPDATE_OFFLINE": {
+      return {
+        ...state,
+        offline: action.payload,
+      }
+    }
+
+
+    
 
     default:{
       return state

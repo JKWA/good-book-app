@@ -2,13 +2,16 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { withStyles } from 'material-ui/styles'
 import ErrorIcon from 'material-ui-icons/Error'
+import Paper from 'material-ui/Paper'
 import Typography from 'material-ui/Typography'
-
+import Toast from 'material-ui/Snackbar';
  
 
   const styles = theme => (
-
+    // console.log(theme)
     {
+
+   
 
     container: {
         display: 'flex',
@@ -31,49 +34,45 @@ import Typography from 'material-ui/Typography'
  
   });
   
-class Message extends Component {
+class Offline extends Component {
 
-    constructor(props) {
-        super(props)
-        this.state = {show:true}
-        this.setLocalState = this.setState
-      }
-
-      // componentDidMount() {
-      //   this.timer = 
-      // }
-      
-
-    // componentWillUnMount() {
-    //   clearTimeout(this.timer);
-    // }
+  constructor(props) {
+    super(props)
+    this.state = {open: true,}
     
+  }
 
     render() {
         const classes = this.props.classes;
         
-        return (    
-          <div>
-          {this.state.show &&
-          <div className={classes.container}>
-            <ErrorIcon className={classes.errorIcon}/>
-            <Typography type="body1" className={classes.rating}>
-              {this.props.message}
-            </Typography>
-          </div>
-          }
-          </div>
+        return (   
+          <Toast
+          open={this.props.open}
+          message="You are offline"
+          autoHideDuration={4000}
+        />  
+          // <div className={classes.container}>
+          //   <ErrorIcon className={classes.errorIcon}/>
+          //   <Typography type="body1" className={classes.rating}>
+          //     Offline
+          //   </Typography>
+          // </div>
         )
-    } 
+    }
+    handleRequestClose = () => {
+      this.setState({
+        open: false,
+      });
+    };
 
 }
 
-Message.propTypes = {
+Offline.propTypes = {
   classes: PropTypes.object.isRequired,
-  message: PropTypes.string,
+ 
   
 
 }
   
 
-export default withStyles(styles)(Message)
+export default withStyles(styles)(Offline)

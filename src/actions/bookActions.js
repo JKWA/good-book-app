@@ -1,8 +1,18 @@
 
 
-export function fetchBooks(queryString){
+export function fetchBooks(queryString, offline){
     return (dispatch) => {
+
         dispatch({type: 'FETCH_BOOKS_PENDING', payload: queryString})
+        
+        if(offline){
+            dispatch({type:'FETCH_BOOKS_REJECTED', payload:{type:'OFFLINE_ERROR', message: 'You are offline'}})
+            setTimeout(() => {
+                dispatch({type:'ERROR_MESSAGE_TIMEOUT', payload:true})
+            }, 5000)
+            return 
+        }
+
         fetchGoogleBooks(queryString, 0)
         .then(result =>{
             dispatch({type: 'ADD_BOOK', payload: result})
@@ -15,9 +25,16 @@ export function fetchBooks(queryString){
 }
 
 
-export function addBooks(queryString, startIndex){
+export function addBooks(queryString, startIndex, offline){
     return (dispatch) => {
-        dispatch({type: 'ADD_BOOKS_PENDING', payload: queryString})
+
+        dispatch({type: 'ADD_BOOKS_PENDING', payload: queryString})        
+
+        if(offline){
+            dispatch({type:'FETCH_BOOKS_REJECTED', payload:{type:'OFFLINE_ERROR', message: 'You are offline'}})
+            return 
+        }
+
         fetchGoogleBooks(queryString, startIndex)
         .then(result =>{
             dispatch({type: 'ADD_BOOK', payload: result})
@@ -104,6 +121,8 @@ function _createCORSRequest(method, url) {
     }
     return bookObj
   }
+
+
   
  
 

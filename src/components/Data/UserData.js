@@ -34,12 +34,13 @@ class FavoriteBookData extends Component {
             this.firestoreListener.book = firebase.firestore().collection('user').doc(user.uid).collection('book')
                 .onSnapshot((snap) => {
                     snap.docChanges.forEach((bookChange) => {
+                        console.log('type', bookChange.type)
                         if (bookChange.type === "added") {
 
                             this.props.dispatch(
                                 addUserBookData(
                                     bookChange.doc.id, 
-                                    (bookChange.doc.exists) ? bookChange.doc.data() : {}
+                                    Object.assign({}, (bookChange.doc.exists) ? bookChange.doc.data() : {}, {saved:true})
                             ))
 
                         }
@@ -48,8 +49,8 @@ class FavoriteBookData extends Component {
                             this.props.dispatch(
                                 modifyUserBookData(
                                     bookChange.doc.id, 
-                                    (bookChange.doc.exists) ? bookChange.doc.data() : {}
-                            )) 
+                                    Object.assign({}, (bookChange.doc.exists) ? bookChange.doc.data() : {}, {saved:true})
+                                )) 
                         }
 
                         if (bookChange.type === "removed") {

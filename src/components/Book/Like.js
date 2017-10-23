@@ -40,11 +40,19 @@ import grey from 'material-ui/colors/grey';
       flexDirection: 'column',
     },
 
-    like: {
-      color:green[500]
+    likeSaved: {
+      color:green[600]
     },
 
-    notLike: {
+    likeSaving: {
+      color:green[200]
+    },
+
+    notLikeSaved: {
+      color:red[300]
+    },
+
+    notLikeSaving: {
       color:red[700]
     },
    
@@ -66,13 +74,18 @@ class Like extends Component {
 
     render() {
         const classes = this.props.classes;
-        let like = (!this.props.userBook[this.props.bookId]) ? false : (this.props.userBook[this.props.bookId].like) ? this.props.userBook[this.props.bookId].like : false
-        const rating = (this.props.rating) ? Math.round(this.props.rating*100) : null        
-        let likeClass = (like === 'yes') ? classes.like : null
-        let notLikeClass = (like === 'no') ? classes.notLike : null
+        const book = (this.props.userBook[this.props.bookId]) ? this.props.userBook[this.props.bookId] : {}
+        
+        let like = (book.like) ? book.like : false
+        const rating = (this.props.rating) ? Math.round(this.props.rating*100) : null 
+        const saved = (book.saved) ? true : false
+        
+        let likeClass = (like === 'yes') ? (saved) ? classes.likeSaved : classes.likeSaving : null
+        let notLikeClass = (like === 'no') ? (saved) ? classes.notLikeSaved : classes.notLikeSaving : null
       
         return (
             <div className={classes.container}>
+            
             {rating &&
               <div className={classes.rating}>
                 <Typography type="caption">
@@ -83,6 +96,7 @@ class Like extends Component {
                 </Typography>
               </div>
               }
+
               <IconButton
                 id="yes"
                 label="like"

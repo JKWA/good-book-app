@@ -20,6 +20,7 @@ const mapStateToProps = state => {
         fetching: state.book.fetching,
         fetched: state.book.fetched,
         fetchError: state.book.fetchError,
+        offline: state.layout.offline,
     }
   }
 
@@ -116,7 +117,7 @@ class Search extends React.Component {
             return;
         }
 
-        this.props.dispatch(fetchBooks(this.state.queryString));
+        this.props.dispatch(fetchBooks(this.state.queryString, this.props.offline));
 
     }
 

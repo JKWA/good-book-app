@@ -74,10 +74,7 @@ const initialState = {
             searchBooks: Object.assign({}, state.searchBooks, action.payload),
         }
       }
-
       
-      
-
     case "ADD_BOOKS_FULFILLED": {
         return {
           ...state,
@@ -97,6 +94,17 @@ const initialState = {
           searchBooks: {},
         }
       }
+
+      case "ERROR_MESSAGE_TIMEOUT": {
+        return {
+          ...state,
+          queryError: null,
+          fetching: false,
+          fetched: false,
+          fetchError: null,
+        }
+      }
+      
 
       case "BOOK_QUERY_UPDATE": {
         return {

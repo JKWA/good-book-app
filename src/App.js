@@ -19,6 +19,14 @@ const firebaseConfig = {
  
   firebase.initializeApp(firebaseConfig)
   firebase.firestore().enablePersistence()
+  .catch(function(error) {
+    if (error.code === 'failed-precondition') {
+
+       console.log(error.code)
+    } else if (error.code === 'unimplemented') {
+        console.log(error.code)
+    }
+})
 
 
 class App extends Component {

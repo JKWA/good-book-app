@@ -39,8 +39,10 @@ import TechnologyPage from './pages/Technology'
 import Login from './components/User/Login'
 import UserBookData from './components/Data/UserBookData'
 import UserData from './components/Data/UserData'
+import OfflineToast from './components/Error/Offline'
 
-import { closeDrawer, setRoute, setDisplaySize } from './actions/layoutActions'
+
+import { closeDrawer, setRoute, setDisplaySize, updateOfflineStatus } from './actions/layoutActions'
 import { signOut, watchAuthStatus, openLoginDialog } from './actions/userActions'
 
 const theme = createMuiTheme({
@@ -57,6 +59,7 @@ const mapStateToProps = state => {
       dockedDrawer: state.layout.dockedDrawer,
       size: state.layout.displaySize.size,
       signedIn: state.user.signedIn,
+      offline: state.layout.offline,
       uid: state.user.uid,
       openLoginDialog: state.layout.openLoginDialog,
       route: state.layout.route,
@@ -161,16 +164,21 @@ class Layout extends Component {
         this._signIn = this._signIn.bind(this)
         this._signOut = this._signOut.bind(this)
         this.state = { width: '0', height: '0' }
-        this.updateWindowDimensions = this.updateWindowDimensions.bind(this)
+        this._updateWindowDimensions = this._updateWindowDimensions.bind(this)
+        this._updateOfflineStatues = this._updateOfflineStatues.bind(this)
+        
       }
 
       componentDidMount() {
         this.props.dispatch(watchAuthStatus()) 
-        this.updateWindowDimensions()
-        window.addEventListener('resize', this.updateWindowDimensions)       
+        this._updateWindowDimensions()
+        window.addEventListener('resize', this._updateWindowDimensions)  
+        window.addEventListener('online', this._updateOfflineStatues) 
+        window.addEventListener('offline', this._updateOfflineStatues)     
+        
       }
 
-      updateWindowDimensions() {
+      _updateWindowDimensions() {
         this.props.dispatch(setDisplaySize(window.innerHeight, window.innerWidth))
         this.setState({ width: window.innerWidth, height: window.innerHeight })
       }
@@ -195,6 +203,7 @@ class Layout extends Component {
         <div>
           <UserData />
           <UserBookData />
+          <OfflineToast open={this.props.offline}/>
           
           <Login/>
           <Router >
@@ -333,7 +342,16 @@ class Layout extends Component {
       </MuiThemeProvider>
       )
     }
-    _openDrawer(event){
+
+    _updateOfflineStatues = (event) =>{
+      console.log(event)
+      const online = window.navigator.onLine
+      console.log(online)
+      
+      this.props.dispatch(updateOfflineStatus(!window.navigator.onLine))
+    }
+
+    _openDrawer = (event) =>{
         this.props.dispatch(openDrawer())
     }
 

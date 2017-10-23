@@ -18,6 +18,14 @@ export function toggleDrawer(){
     }
 }
 
+
+
+export function updateOfflineStatus(online){
+    return (dispatch) => {
+        dispatch({type: 'UPDATE_OFFLINE', payload: online})
+    }
+}
+
 export function setRoute(route){
     return (dispatch) => {
         dispatch({type: 'SET_ROUTE', payload: route})

@@ -13,18 +13,25 @@ export function saveFavoriteStatus(bookId, uid, favorite, like){
         }
 
         if(bookId){
-
+            if(favorite || like){
+                dispatch({type:'ADD_USER_BOOK_RATING', payload: {id:bookId, details:{favorite, like, saved:false}}})
+            }else{
+                dispatch({type: 'REMOVE_USER_BOOK', payload: bookId})   
+            }
             const favRef = firebase.firestore().doc(`user/${uid}/book/${bookId}`)
-
+           
+            favRef.get().then(() => {console.log('testing')})
             const updateFavoriteStatus = new Promise((resolve, reject) =>{
                 favRef.get()
                     .then((favDoc) =>{
+                        console.log(favDoc)
+                        
                         const deleteItem = (favDoc.exists) ? firebase.firestore.FieldValue.delete() : null
                         const updateFavorite = {
                             favorite: (favorite) ? favorite : deleteItem, 
                             like: (like) ? like : deleteItem
                         }
-
+                        
                         return (favDoc.exists) ? favRef.update(updateFavorite) : favRef.set(updateFavorite)
                     })
                     .then(() => {
@@ -36,21 +43,17 @@ export function saveFavoriteStatus(bookId, uid, favorite, like){
                         reject('SAVE_ERROR')
                         return
                     })
- 
                 })
 
                 updateFavoriteStatus.then((saveStatus) => {
                     
-                    console.log('saveStatus', saveStatus)
                     if(saveStatus === 'DELETE'){
-                        console.log('DELETE ITEM')
                         firebase.firestore().batch().delete(favRef).commit()
                         return 
                     }
 
                     _setBookIfNonExists(bookId)
                         .then((book) =>{
-                       
                         
                         })
                         .catch((error) =>{
