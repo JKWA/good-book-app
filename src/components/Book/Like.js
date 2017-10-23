@@ -49,11 +49,11 @@ import grey from 'material-ui/colors/grey';
     },
 
     notLikeSaved: {
-      color:red[300]
+      color:red[700]
     },
 
     notLikeSaving: {
-      color:red[700]
+      color:red[300]
     },
    
     error: {
@@ -85,7 +85,7 @@ class Like extends Component {
       
         return (
             <div className={classes.container}>
-            
+
             {rating &&
               <div className={classes.rating}>
                 <Typography type="caption">
