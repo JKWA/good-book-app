@@ -143,6 +143,7 @@ const mapStateToProps = state => {
      userBook: state.user.book,
      display: state.layout.displaySize.size,
      width: state.layout.displaySize.width,
+     userSaveError: state.user.userSaveError,
   }
 }
 

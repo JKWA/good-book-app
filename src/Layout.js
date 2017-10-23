@@ -40,6 +40,7 @@ import Login from './components/User/Login'
 import UserBookData from './components/Data/UserBookData'
 import UserData from './components/Data/UserData'
 import OfflineToast from './components/Error/Offline'
+import SlowDatabaseToast from './components/Error/SlowDatabase'
 
 
 import { closeDrawer, setRoute, setDisplaySize, updateOfflineStatus } from './actions/layoutActions'
@@ -57,6 +58,7 @@ const mapStateToProps = state => {
     return {
       openDrawer: state.layout.openDrawer,
       dockedDrawer: state.layout.dockedDrawer,
+      slowDatabase: (!state.user.slowDatabase) ? false : (state.layout.offline) ? false : true,
       size: state.layout.displaySize.size,
       signedIn: state.user.signedIn,
       offline: state.layout.offline,
@@ -166,7 +168,6 @@ class Layout extends Component {
         this.state = { width: '0', height: '0' }
         this._updateWindowDimensions = this._updateWindowDimensions.bind(this)
         this._updateOfflineStatues = this._updateOfflineStatues.bind(this)
-        
       }
 
       componentDidMount() {
@@ -175,7 +176,6 @@ class Layout extends Component {
         window.addEventListener('resize', this._updateWindowDimensions)  
         window.addEventListener('online', this._updateOfflineStatues) 
         window.addEventListener('offline', this._updateOfflineStatues)     
-        
       }
 
       _updateWindowDimensions() {
@@ -204,8 +204,8 @@ class Layout extends Component {
           <UserData />
           <UserBookData />
           <OfflineToast open={this.props.offline}/>
-          
-          <Login/>
+          <SlowDatabaseToast open={this.props.slowDatabase} />
+          <Login />
           <Router >
             <div>
               <AppBar position="absolute">

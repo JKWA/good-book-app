@@ -18,12 +18,19 @@ export function saveFavoriteStatus(bookId, uid, favorite, like){
             }else{
                 dispatch({type: 'REMOVE_USER_BOOK', payload: bookId})   
             }
+
+            const timeout = setTimeout(function() {
+                dispatch({type: 'SLOW_DATABASE', payload:{type:'SAVE_USER_UPDATE_ERROR', message:'The database is slow'}})  
+                
+            }, 1500);
+
             const favRef = firebase.firestore().doc(`user/${uid}/book/${bookId}`)
            
             favRef.get().then(() => {console.log('testing')})
             const updateFavoriteStatus = new Promise((resolve, reject) =>{
                 favRef.get()
                     .then((favDoc) =>{
+                        clearTimeout(timeout)
                         console.log(favDoc)
                         
                         const deleteItem = (favDoc.exists) ? firebase.firestore.FieldValue.delete() : null
@@ -35,17 +42,20 @@ export function saveFavoriteStatus(bookId, uid, favorite, like){
                         return (favDoc.exists) ? favRef.update(updateFavorite) : favRef.set(updateFavorite)
                     })
                     .then(() => {
+                        
                         (!like && !favorite) ? resolve('DELETE') : resolve('SAVE')
                         return
                     })
                     .catch((error) =>{
                         console.log('ERROR', error)
-                        reject('SAVE_ERROR')
+                        reject('USER_SAVE_ERROR')
                         return
                     })
                 })
 
-                updateFavoriteStatus.then((saveStatus) => {
+                updateFavoriteStatus
+                .then((saveStatus) => {
+                    console.log('clear after next promise')
                     
                     if(saveStatus === 'DELETE'){
                         firebase.firestore().batch().delete(favRef).commit()
@@ -60,6 +70,9 @@ export function saveFavoriteStatus(bookId, uid, favorite, like){
                             return console.log('SET_BOOK_DETAILS_ERROR', error)
                         })
                     })
+                .catch((error) => {
+                    console.log('SAVE_ERROR_CATCH', error)
+                })
         
             }else{
                 console.log('NO_BOOK_ID')
@@ -75,7 +88,6 @@ export function updateUserData(displayName, email, initialLogin, book){
                     displayName: (displayName) ? displayName : null,
                     email: (email) ? email : null,
                     initialLogin: (initialLogin) ? initialLogin : null,
-                    // book: (user.book) ? book : {},
                 }})
     }
 }
@@ -151,7 +163,7 @@ export function saveUserName(userName, uid){
                 dispatch({type: 'SAVED_DATA', payload:userName})
             })
             .catch( error =>{
-                dispatch({type: 'SAVE_ERROR', payload:error})
+                dispatch({type: 'USER_SAVE_ERROR', payload:error})
             })      
     }
 }

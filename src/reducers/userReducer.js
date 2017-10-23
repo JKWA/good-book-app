@@ -2,7 +2,8 @@
 
 
 const initialState = {
-    error: null,
+    userSaveError: null,
+    slowDatabase: false,
     displayName: '',
     email:'',
     initialLogin: null,
@@ -37,14 +38,25 @@ const initialState = {
    
     }
 
-    case "SAVE_ERROR": {
+    case "USER_SAVE_ERROR": {
       return {
         ...state, 
         saving: false,
-        error: action.payload,
+        userSaveError: action.payload,
       }
    
     }
+
+    case "SLOW_DATABASE": {
+      return {
+        ...state, 
+        saving: false,
+        slowDatabase: action.payload,
+      }
+   
+    }
+
+    
 
     case "SIGN_OUT": {
       return {
@@ -55,7 +67,8 @@ const initialState = {
         favoriteBooks:{},
         initialLogin: null,
         signedIn: false,
-        error: null,
+        userSaveError: null,
+        slowDatabase: false,
         uid: null,
         loginAccountError: null,
         loginEmailError: action.payload,
@@ -149,7 +162,6 @@ const initialState = {
         loginEmailError: null,
         loginPasswordError: action.payload,
       }
-  
     }
     
     case "ADD_USER_BOOK_RATING": {
@@ -159,6 +171,8 @@ const initialState = {
       return {
         ...state,
         book: Object.assign({}, state.book, book),
+        userSaveError: null,
+        slowDatabase: false,
       }
     
     }
@@ -170,6 +184,8 @@ const initialState = {
       return {
         ...state,
         book: Object.assign({}, state.book, book),
+        userSaveError: null,
+        slowDatabase: false,
       }
     
     }
